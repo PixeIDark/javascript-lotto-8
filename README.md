@@ -2,7 +2,7 @@
 
 간단한 로또 발매기를 구현하는 프로젝트입니다.
 
-[test.mov](test.mov)
+https://github.com/user-attachments/assets/b3cc86ae-6546-4fd0-8f6f-734324ef578d
 
 ## 📋 기능 목록
 
