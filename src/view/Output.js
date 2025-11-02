@@ -19,7 +19,7 @@ class Output {
 
   #printRankResult({display, amount, count}) {
     const money = formatCurrency(amount);
-    MissionUtils.Console.print(OUTPUT_MESSAGES.PURCHASE_RESULT(display, money, count));
+    MissionUtils.Console.print(OUTPUT_MESSAGES.WINNING_RESULT(display, money, count));
   }
 
   printProfitRate(rate) {

@@ -8,7 +8,7 @@ export const INPUT_MESSAGES = {
 
 export const OUTPUT_MESSAGES = {
   PURCHASE_COUNT: (count) => `\n${count}개를 구매했습니다.`,
-  PURCHASE_RESULT: (display, money, count) => `${display} (${money}원) - ${count}개`,
+  WINNING_RESULT: (display, money, count) => `${display} (${money}원) - ${count}개`,
   WIN_STATISTICS: "\n당첨 통계",
   SEPARATOR: "---",
   PROFIT_RATE: (rate) => `총 수익률은 ${rate}%입니다.`,
