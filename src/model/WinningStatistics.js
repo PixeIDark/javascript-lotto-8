@@ -4,7 +4,7 @@ class WinningStatistics {
   #rankCounts;
 
   constructor(lottoTickets, winningLotto) {
-    this.#rankCounts = new Map([[3, 0], [4, 0], [5, 0], [5.5, 0], [6, 0]]);
+    this.#rankCounts = new Map(Object.keys(PRIZE_INFO).map(rank => [Number(rank), 0]).toSorted((a, b) => a[0] - b[0]));
     this.#calculate(lottoTickets, winningLotto);
   }
 
