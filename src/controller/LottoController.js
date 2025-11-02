@@ -13,50 +13,47 @@ class LottoController {
   }
 
   async execute() {
-    const {money, lottoCount} = await this.#handlePurchase();
-    const tickets = this.#handleLottoGeneration(lottoCount);
-    await this.#handleResult(tickets, money);
+    const {money, lottoCount} = await this.#getPurchaseAmount();
+    const tickets = await this.#generateTickets(lottoCount);
+    const winningLotto = await this.#getWinningLotto();
+    await this.#displayResults(tickets, winningLotto, money);
   }
 
-  async #handlePurchase() {
-    const money = await handleInput(readPurchaseAmount, (message) => this.#output.printError(message));
+  async #getPurchaseAmount() {
+    const money = await this.#getValidInput(readPurchaseAmount);
     const lottoCount = getLottoCount(money);
     this.#output.printCount(lottoCount);
 
     return {money, lottoCount};
   }
 
-  #handleLottoGeneration(lottoCount) {
-    const lottoCollection = new LottoCollection(lottoCount);
-    const tickets = lottoCollection.getTickets();
-    const formattedTickets = formatLottoTickets(tickets);
-    this.#output.printLottoNumbers(formattedTickets);
+  async #generateTickets(lottoCount) {
+    const tickets = new LottoCollection(lottoCount).getTickets();
+    this.#output.printLottoNumbers(formatLottoTickets(tickets));
 
     return tickets;
   }
 
-  async #handleResult(tickets, money) {
-    const winningLotto = await this.#getWinningLottoWithRetry();
-    this.#displayStatistics(tickets, winningLotto, money);
-  }
-
-  async #getWinningLottoWithRetry() {
+  async #getWinningLotto() {
     try {
-      const winningNumbers = await handleInput(readWinningNumbers, (message) => this.#output.printError(message));
-      const bonusNumber = await handleInput(readBonusNumber, (message) => this.#output.printError(message));
+      const winningNumbers = await this.#getValidInput(readWinningNumbers);
+      const bonusNumber = await this.#getValidInput(readBonusNumber);
 
       return new WinningLotto(winningNumbers, bonusNumber);
     } catch (error) {
       this.#output.printError(error.message);
-      return this.#getWinningLottoWithRetry();
+      return this.#getWinningLotto();
     }
   }
 
-  #displayStatistics(tickets, winningLotto, money) {
+  async #displayResults(tickets, winningLotto, money) {
     const statistics = new WinningStatistics(tickets, winningLotto);
-    const rate = getProfitRate(statistics.getTotalPrize(), money);
     this.#output.printResult(statistics.getDetailedResults());
-    this.#output.printProfitRate(rate);
+    this.#output.printProfitRate(getProfitRate(statistics.getTotalPrize(), money));
+  }
+
+  async #getValidInput(inputReader) {
+    return handleInput(inputReader, (message) => this.#output.printError(message));
   }
 }
 
