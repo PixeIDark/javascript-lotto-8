@@ -1,4 +1,4 @@
-// 게임 규칙 (고정) => 상수가 서로 의존성이 높음
+// 게임 규칙: 상수들이 강하게 결합되어 있어 변경 시 여러 상수를 함께 수정해야 함
 export const MIN_WINNING_RANK = 3;
 export const BONUS_RANK = 5;
 export const BONUS_RANK_WITH_BONUS = 5.5;
